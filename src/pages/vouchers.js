@@ -1,50 +1,60 @@
-import React from 'react'
-//import { Link } from 'gatsby'
+import React , {useEffect, useState} from 'react'
 import Layout from '../components/layout'
 import GoogleMap from '../components/GoogleMap'
-//import Image from '../components/image'
 import { StaticImage } from "gatsby-plugin-image"
 import Seo from "../components/seo"
-//<Link to="/page-2/">Go to page 2</Link>
-import axios from 'axios';
+import axios from "axios"
+var gray_section = "gray_section";
+var logo_group = "logo_group";
+var voucher_2 = "voucher_2";
 
-
-if(window.location.pathname.indexOf("vouchers") > -1){
-  let voucher = window.location.search.split("?=")[1];
-  //axios.defaults.headers.post['Content-Type'] ='application/json';
-  //axios.defaults.headers.post['Access-Control-Allow-Origin'] ='*';
-  //axios.defaults.headers.post['Access-Control-Allow-Methods'] ='GET,PUT,POST,DELETE,PATCH,OPTIONS';
-  let data = {
-    "h":voucher
-  }
-    let url = "https://qa-oky-self-service.okyapp.com/";
-		axios
-			.post(url, data)
-			.then((data) => {
-				console.log("Data retornada:", data);
-			})
-			.catch((error)=> {
-        if (error.response) {
-          // Request made and server responded
-          console.log(error.response.data);
-          console.log(error.response.status);
-          console.log(error.response.headers);
-        } else if (error.request) {
-          // The request was made but no response was received
-          console.log(error.request);
-        } else {
-          // Something happened in setting up the request that triggered an Error
-          console.log('Error', error.message);
-        }        
-      });
-}
-
-
-const IndexPage = () => (
-  <Layout>
-  <Seo title="Home" /> 
+export default function IndexPage () {
+  useEffect(() => {
+    getData();
+  }, []);
   
-  <div className="content_logo_oky">
+  let [responseData, setResponseData] = React.useState('')  
+  const getData = () => {
+    if(window.location.pathname.indexOf("vouchers") > -1){
+      let voucher = window.location.search.split("?=")[1];        
+      let data = {
+        "h":voucher
+      }    
+      let url = "https://midemo.oky.app/verify_voucher.php"
+      axios
+      .post(url, data)
+      .then((data_response) => {
+        console.log("Data:", data_response);
+        if(data_response.data.data.Voucher_Name.indexOf("Vale por") > -1){
+          console.log("Es un vale de dinero");
+          gray_section = "gray_section_short";
+          logo_group = "logo_group_short";
+          voucher_2 = "voucher_2_short"
+        }
+        data_response.data.data.Expiration_Date =  data_response.data.data.Expiration_Date.split(" ")[0];                
+        setResponseData(data_response.data.data);        
+      })
+      .catch((error)=> {
+        if (error.response) {
+          if(error.response.data["error"] === true && error.response.data["message"] === "Voucher has expired"){
+            return error.response.data["message"];
+          }
+        } else if (error.request) {
+          return error.request;
+        } else {
+          return error.message;
+        }
+      });
+    }
+    
+  }
+  
+  
+  return (
+    <Layout>
+    <Seo title="Home" /> 
+    
+    <div className="content_logo_oky">
     <StaticImage
     src="../images/logo_oky.png"
     width={200}
@@ -61,104 +71,76 @@ const IndexPage = () => (
     style={{ marginBottom: `1.45rem` }}
     className="logoOky"
     />
-  </div>     
-
-  <div className="title_oky">
+    </div>     
+    
+    <div className="title_oky">
     <div className="remitente">
-      <div className="remitente_texto">De: José Ramos</div>  
+    <div className="remitente_texto">De: {responseData.Sender_Name}</div>  
     </div>
     <div className="remitente">
-      <div className="description">Te envió un vale prepagado oky :)</div>
+    <div className="description">Te envió un vale prepagado oky :)</div>
     </div>
     <div className="remitente">
-      <div className="code_canje">Código de canje</div>
+    <div className="code_canje">Código de canje</div>
     </div>  
     <div className="remitente">
-      <div className="container_code"></div>
+    <div className="container_code">{responseData.Exchange_Code}</div>
     </div>
     <div className="remitente">
-      <div className="text_expiracion">Expira el 24/05/2021</div>
+    <div className="text_expiracion">Expira el {responseData.Expiration_Date}</div>
     </div>  
-  </div>  
-  
-  <div className="gray_section">
+    </div>  
+    
+    <div className={gray_section}>
     <StaticImage
-    className="logo_group"
+    className={logo_group}
     src="../images/logo_group.png"  
     quality={95}
     formats={["AUTO", "WEBP", "AVIF"]}
     alt="A Gatsby astronaut"  
     />
     <div className="voucher">
-      <StaticImage
-      className="logo_campero"
-      src="../images/logo_campero.png"  
-      quality={95}
-      formats={["AUTO", "WEBP", "AVIF"]}
-      alt="A Gatsby astronaut"  
-      />
+    <img alt="logo partner" className="logo_campero" src={responseData.Partner_Logo} />
+    </div>    
+    <div className={voucher_2} 
+       style={{                
+        backgroundImage: `url(${(responseData.Voucher_Image)})`
+      }}
+    ></div>
+    <div className="name_voucher">{responseData.Voucher_Name}</div>    
+    <div className="description_voucher"  dangerouslySetInnerHTML={{__html: responseData.Voucher_Description}}></div>
     </div>
-    <div className="voucher_2"></div>
-    <div className="name_voucher">Combo 12 piezas con postre - Mesas</div>
-    <div className="name_validate">Válido en mesas</div>
-    <div className="description_voucher">
-    <table>  
-  <tbody>
-    <tr>
-      <td>cell spans rows</td>
-      <td>column spanning</td>
-    </tr> 
-    <tr>
-      <td>cell spans rows</td>
-      <td>column spanning</td>
-    </tr> 
-    <tr>
-      <td>cell spans rows</td>
-      <td>column spanning</td>
-    </tr> 
-    <tr>
-      <td>cell spans rows</td>
-      <td>column spanning</td>
-    </tr>    
-    <tr>
-      <td>cell spans rows</td>
-      <td>column spanning</td>
-    </tr>     
-  </tbody>
-</table>
-    </div>
-  </div>
-
-  <StaticImage
-  className="vector_group2"
-  src="../images/vector_group2.png"  
-  quality={95}
-  formats={["AUTO", "WEBP", "AVIF"]}
-  alt="A Gatsby astronaut"  
-  />
-
-  <div className="information_group"></div>
-
-  <StaticImage
+    
+    <StaticImage
+    className="vector_group2"
+    src="../images/vector_group2.png"  
+    quality={95}
+    formats={["AUTO", "WEBP", "AVIF"]}
+    alt="A Gatsby astronaut"  
+    />
+    
+    <div className="information_group"></div>
+    
+    <StaticImage
     className="vector_group2"
     src="../images/logo_group.png"  
     quality={95}
     formats={["AUTO", "WEBP", "AVIF"]}
     alt="A Gatsby astronaut"  
     />
-
-  <div className="mapa_more">
+    
+    <div className="mapa_more">
     <p className="store">Mapa de Tiendas</p>
     <GoogleMap/>
-  </div> 
-
-  <div className="remitente">
+    </div> 
+    
+    <div className="remitente">
     <div className="dudas">Dudas o problemas de canje</div>    
-  </div> 
-
-  <div className="group_redes"></div>
-
-  <div className="img_oky_puedes">
+    </div> 
+    
+    <div className="group_redes"></div>
+    
+    <div className="img_oky_puedes">
     <StaticImage
     className="oky_puedes"
     src="../images/oky_tu_puedes.png"
@@ -166,9 +148,9 @@ const IndexPage = () => (
     formats={["AUTO", "WEBP", "AVIF"]}
     alt="A Gatsby astronaut"  
     />
-  </div>
-  </Layout>
-  )
+    </div>
+    </Layout>
+    )
+  }
   
-  export default IndexPage
   

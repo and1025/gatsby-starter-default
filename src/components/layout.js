@@ -18,15 +18,14 @@ const Layout = ({ children }) => (
     render={data => (
       <>        
         <div
-          style={{            
+          style={{
             margin: '0 auto',
             maxWidth: 500,
             background: '#FFFFFF',
             boxShadow: '0px 4px 24px rgba(0, 0, 0, 0.17)',
-            borderRadius: '30px',            
+            //borderRadius: '30px',            
             paddingTop: 0,
-          }}
-        >
+          }}>
           {children}
         </div>
       </>

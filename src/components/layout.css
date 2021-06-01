@@ -1,8 +1,7 @@
-
 .content_logo_oky{
   width:auto;
-	height:auto;	
-	margin:10px auto;
+  height:auto;	
+  margin:10px auto;
   text-align:center;	
   padding-top: 40px;
 }
@@ -65,6 +64,10 @@
   width:80%;
   margin-left:10%;
   margin-top:3%;
+  color: white;
+  text-align: center;
+  font-size: 20px;
+  padding-top: 10px;
 }
 .text_expiracion{
   font-family: Lato;
@@ -80,20 +83,41 @@
 }
 .gray_section{
   height: 760px;
-  background-image: url("../images/rectangle.png");  
+  background-image: url("../images/rectangle.png");
   padding-top: 30px;
   background-repeat: no-repeat;
   margin-top: 5%;
   background-size: cover;
 }
-.logo_group{
-    left: 46.4%;
-    right: 44.53%;
-    top: 0.43%;
-    bottom: 81.52%;
-    width: 34px;
-    height: 34px;
+
+.gray_section_short{  
+  background-image: url("../images/rectangle_short.png");
+  padding-top: 30px;
+  background-repeat: no-repeat;
+  margin-top: 5%;
+  background-size: cover;  
+  height: 530px;
 }
+
+
+.logo_group{
+  left: 46.4%;
+  right: 44.53%;
+  top: 0.43%;
+  bottom: 81.52%;
+  width: 34px;
+  height: 34px;
+}
+
+.logo_group_short{
+  top: -1.43%;
+  left: 46.4%;
+  right: 44.53%;  
+  bottom: 81.52%;
+  width: 34px;
+  height: 34px;
+}
+
 .voucher{
   width: 80%;
   height: 15%;
@@ -103,9 +127,8 @@
   margin-top: 4%;
 }
 .logo_campero{
-  width: 60%;
-  margin-left: 20%;
-  margin-top: 3%;
+  border-radius: 30px;
+  width: 100%;
 }
 
 .voucher_2{
@@ -113,8 +136,19 @@
   height: 30%;
   background:#ffffff;
   border-radius: 30px;
-  margin-left: 25%;
-  margin-top: 4%;  
+  margin-left: 25%;  
+  margin-top: 4%;
+  background-image: url("../images/pollo_campero_2.jpeg");
+  background-size: cover;
+}
+
+.voucher_2_short{
+  width: 50%;
+  height: 30%;
+  background:#ffffff;
+  border-radius: 30px;
+  margin-left: 25%;  
+  margin-top: 20%;
   background-image: url("../images/pollo_campero_2.jpeg");
   background-size: cover;
 }
@@ -136,8 +170,8 @@
 }
 
 .description_voucher{
-  height: 200px;
-  background: lightgray;
+  padding-top: 1%;
+  height: 200px;  
   width: 60%;
   margin-left: 20%;
   border-radius: 30px;
@@ -219,4 +253,51 @@ td {
 }
 .oky_puedes{
   vertical-align: middle;
+}
+
+@media (max-width: 600px) {
+  .gray_section {
+    height: 645px;
+    background-size: cover;
+  }
+  .voucher_2{
+    width: 45%;
+    height: 25%;
+    border-radius: 30px;
+    margin-left: 28%;
+    margin-top: 4%;
+  }
+
+  .voucher{
+    margin-top: 0;
+    height: auto;
+  }
+
+  .description_voucher{
+    padding-top: 1px;
+    padding-left: 10px;
+    height: 180px;
+    padding-right: 10px;
+    margin-left: 18%;
+  }
+
+  .description_voucher > div > div {
+    font-size: 14px;
+  }
+
+  .description_voucher > p{
+    font-size: 17px;
+  }
+
+  .logo_group{
+    top: -1%;
+  }
+
+  .logo_group_short{
+    top: -4.43%;
+  }
+
+  .gray_section_short{
+    height: 401px;
+  }
 }
