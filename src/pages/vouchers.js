@@ -29,7 +29,7 @@ export default function IndexPage () {
           console.log("Es un vale de dinero");
           gray_section = "gray_section_short";
           logo_group = "logo_group_short";
-          voucher_2 = "voucher_2_short"
+          voucher_2 = "voucher_2_short";
         }
         data_response.data.data.Expiration_Date =  data_response.data.data.Expiration_Date.split(" ")[0];                
         setResponseData(data_response.data.data);        
